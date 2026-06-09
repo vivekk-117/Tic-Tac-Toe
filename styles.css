@@ -248,10 +248,13 @@ header {
     text-shadow: 0 0 10px var(--o-glow);
 }
 
-.vs-badge {
+button {
+    height: 2.5em;
+    border-radius: 45%;
+    background-color: rgb(28, 255, 149);
     font-family: 'Bungee', sans-serif;
     font-size: clamp(.75rem, 2.5vmin, 1rem);
-    color: var(--text-lo);
+    color: var(--pink);
     letter-spacing: .1em;
 }
 
