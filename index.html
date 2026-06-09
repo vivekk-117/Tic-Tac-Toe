@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Tic-Tac-Toe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@400;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- floating blobs -->
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <!-- ── HEADER ── -->
+  <header>
+    <h1 class="title">TIC-TAC-TOE</h1>
+  </header>
+
+  <!-- ── PLAYER BADGES ── -->
+  <div class="players">
+    <div class="badge x"><span class="sym">X</span> Player 1</div>
+    <span class="vs-badge">VS</span>
+    <div class="badge o"><span class="sym">O</span> Computer</div>
+  </div>
+
+  <!-- ── BOARD ── -->
+  <div class="board-card">
+    <div class="board">
+      <!-- Row 1 -->
+      <div class="cell x win"></div>
+      <div class="cell o"></div>
+      <div class="cell x"></div>
+      <!-- Row 2 -->
+      <div class="cell o"></div>
+      <div class="cell x win"></div>
+      <div class="cell o"></div>
+      <!-- Row 3 -->
+      <div class="cell"></div>
+      <div class="cell o"></div>
+      <div class="cell x win"></div>
+    </div>
+  </div>
+
+  <!-- ── SCORE ROW ── -->
+  <div class="scores">
+    <div class="score-card x">
+      <span class="lbl">X · Player 1</span>
+      <span class="num">3</span>
+    </div>
+    <div class="score-card tie">
+      <span class="lbl">Draws</span>
+      <span class="num">1</span>
+    </div>
+    <div class="score-card o">
+      <span class="lbl">O · Computer </span>
+      <span class="num">2</span>
+    </div>
+  </div>
+
+  <footer>Three in a row wins &nbsp;·&nbsp; Alternate turns &nbsp;·&nbsp; Best of 7</footer>
+
+</body>
+
+</html>
