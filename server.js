@@ -17,7 +17,6 @@ const WINNING_COMBOS = [
     [0, 4, 8], [2, 4, 6]             // Diagonals
 ];
 
-// Helper: Read state database file safely
 function readDatabase() {
     if (!fs.existsSync(DATA_FILE)) {
         fs.writeFileSync(DATA_FILE, JSON.stringify({}), 'utf8');
@@ -30,12 +29,10 @@ function readDatabase() {
     }
 }
 
-// Helper: Write state database file safely
 function writeDatabase(data) {
     fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
 }
 
-// Helper: Create a brand new game state configuration
 function createInitialState(gameId, existingScores = null) {
     return {
         gameId: gameId,
@@ -47,7 +44,6 @@ function createInitialState(gameId, existingScores = null) {
     };
 }
 
-// Helper: Check for winner or draw status
 function checkGameStatus(board) {
     for (let combo of WINNING_COMBOS) {
         const [a, b, c] = combo;
@@ -61,9 +57,8 @@ function checkGameStatus(board) {
     return 'ongoing';
 }
 
-// Smart-ish Computer AI (Blocks winning moves, tries to win, or takes random open square)
 function computeAIResponse(board) {
-    // 1. Can Computer ('O') win in this next turn?
+
     for (let i = 0; i < 9; i++) {
         if (board[i] === null) {
             let tempBoard = [...board];
@@ -71,7 +66,7 @@ function computeAIResponse(board) {
             if (checkGameStatus(tempBoard) === 'win-O') return i;
         }
     }
-    // 2. Can Human ('X') win in their next turn? If so, block them.
+
     for (let i = 0; i < 9; i++) {
         if (board[i] === null) {
             let tempBoard = [...board];
@@ -79,14 +74,13 @@ function computeAIResponse(board) {
             if (checkGameStatus(tempBoard) === 'win-X') return i;
         }
     }
-    // 3. Prefer the center square if open
+
     if (board[4] === null) return 4;
-    // 4. Fallback to picking any random available square
+
     let availableSquares = board.map((val, idx) => val === null ? idx : null).filter(v => v !== null);
     return availableSquares[Math.floor(Math.random() * availableSquares.length)];
 }
 
-// Helper: JSON parser middleware equivalent for native http
 function parseJsonBody(req, callback) {
     let body = '';
     req.on('data', chunk => { body += chunk.toString(); });
@@ -99,12 +93,10 @@ function parseJsonBody(req, callback) {
     });
 }
 
-// The core HTTP server instance
 const server = http.createServer((req, res) => {
     const parsedUrl = url.parse(req.url, true);
     const pathname = parsedUrl.pathname;
 
-    // --- API ENDPOINT: GET /state ---
     if (pathname === '/state' && req.method === 'GET') {
         const gameId = parsedUrl.query.gameId;
         if (!gameId) {
@@ -122,7 +114,6 @@ const server = http.createServer((req, res) => {
         return res.end(JSON.stringify(db[gameId]));
     }
 
-    // --- API ENDPOINT: POST /move ---
     if (pathname === '/move' && req.method === 'POST') {
         return parseJsonBody(req, (err, data) => {
             const { gameId, index } = data;
@@ -135,17 +126,14 @@ const server = http.createServer((req, res) => {
 
             let gameState = db[gameId];
 
-            // Validate Move
             if (gameState.status !== 'ongoing' || gameState.board[index] !== null || gameState.turn !== 'X') {
                 res.writeHead(400, { 'Content-Type': 'application/json' });
                 return res.end(JSON.stringify({ error: 'Illegal move attempted' }));
             }
 
-            // 1. Execute Human Turn ('X')
             gameState.board[index] = 'X';
             gameState.status = checkGameStatus(gameState.board);
 
-            // 2. Execute Computer Turn ('O') if game is still going
             if (gameState.status === 'ongoing') {
                 gameState.turn = 'O';
                 const aiIndex = computeAIResponse(gameState.board);
@@ -156,7 +144,6 @@ const server = http.createServer((req, res) => {
                 gameState.turn = 'X';
             }
 
-            // Update running score data permanently if game concluded
             if (gameState.status === 'win-X') gameState.scores.X++;
             else if (gameState.status === 'win-O') gameState.scores.O++;
             else if (gameState.status === 'draw') gameState.scores.draws++;
@@ -169,7 +156,6 @@ const server = http.createServer((req, res) => {
         });
     }
 
-    // --- API ENDPOINT: POST /reset ---
     if (pathname === '/reset' && req.method === 'POST') {
         return parseJsonBody(req, (err, data) => {
             const { gameId } = data;
@@ -180,7 +166,6 @@ const server = http.createServer((req, res) => {
                 return res.end(JSON.stringify({ error: 'Invalid game identification' }));
             }
 
-            // Save running total scores across matches but clear layout data arrays
             db[gameId] = createInitialState(gameId, db[gameId].scores);
             writeDatabase(db);
 
@@ -189,12 +174,10 @@ const server = http.createServer((req, res) => {
         });
     }
 
-    // --- STATIC FILES ROUTING ENGINE (HTML, CSS, Frontend JS) ---
     if (req.method === 'GET') {
         let safePath = pathname === '/' ? '/index.html' : pathname;
         let fileLocation = path.join(PUBLIC_DIR, safePath);
 
-        // Map safe common extension headers
         const extname = path.extname(fileLocation);
         let contentType = 'text/html';
         switch (extname) {
