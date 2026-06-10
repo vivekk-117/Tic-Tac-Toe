@@ -481,7 +481,7 @@ footer {
 
 /*RESPONSIVE TWEAKS */
 
-/* very small phones (≤ 360 px) */
+/*small phones*/
 @media (max-width: 360px) {
     :root {
         --cell: 80px;
