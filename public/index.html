@@ -3,6 +3,7 @@
 
 <head>
   <title>Tic-Tac-Toe</title>
+  <meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@400;600;700&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="styles.css">
@@ -18,6 +19,7 @@
   <!-- ── HEADER ── -->
   <header>
     <h1 class="title">TIC-TAC-TOE</h1>
+    <h3 id="status" style="text-align: center; margin-top: 10px;">Loading Game...</h3>
   </header>
 
   <!-- ── PLAYER BADGES ── -->
@@ -31,17 +33,17 @@
   <div class="board-card">
     <div class="board">
       <!-- Row 1 -->
-      <div class="cell x win"></div>
-      <div class="cell o"></div>
-      <div class="cell x"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
       <!-- Row 2 -->
-      <div class="cell o"></div>
-      <div class="cell x win"></div>
-      <div class="cell o"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
       <!-- Row 3 -->
       <div class="cell"></div>
-      <div class="cell o"></div>
-      <div class="cell x win"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
     </div>
   </div>
 
@@ -62,7 +64,7 @@
   </div>
 
   <footer>Three in a row wins &nbsp;·&nbsp; Alternate turns &nbsp;·&nbsp; Best of 7</footer>
-  <script src="app.js"></script>
+  <script src="game.js"></script>
 </body>
 
 </html>
